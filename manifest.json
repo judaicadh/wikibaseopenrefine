@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "mediawiki": {
+    "name": "OpenRefine shira",
+    "root": "https://shira.wikibase.cloud/wiki/",
+    "main_page": "https://shira.wikibase.cloud/wiki/Main_Page",
+    "api": "https://shira.wikibase.cloud/w/api.php"
+  },
+  "wikibase": {
+    "site_iri": "https://shira.wikibase.cloud/entity/",
+    "maxlag": 5,
+    "max_edits_per_minute": 60,
+    "tag": "openrefine-${version}",
+    "properties": {
+      "instance_of": "P39",
+      "subclass_of": "P40"
+    }
+  },
+  "oauth": {
+    "registration_page": "https://shira.wikibase.cloud/wiki/Special:OAuthConsumerRegistration/propose"
+  },
+  "reconciliation": {
+    "endpoint": "http://localhost:8000/${lang}/api"
+  },
+  "entity_types": {
+    "item": {
+      "site_iri": "https://shira.wikibase.cloud/entity/",
+      "reconciliation_endpoint": "http://localhost:8000/${lang}/api",
+      "mediawiki_api": "https://shira.wikibase.cloud/w/api.php"
+    }
+  }
+}
