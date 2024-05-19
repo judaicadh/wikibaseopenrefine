@@ -125,13 +125,13 @@ type_property_path = 'P39'
 property_for_this_type_property = None
 
 # Optional prefix in front of properties in SPARQL-like property paths
-wdt_prefix = 'shir'
+wdt_prefix = 'wdt'
 
 # Sparql query used to fetch all the subclasses of a given item.
 # https://shira.wikibase.cloud/wiki/Property:P40
 # The '$qid' string will be replaced by the qid whose children should be fetched.
 sparql_query_to_fetch_subclasses = """
-SELECT ?child WHERE { ?child shir:P40* wd:$qid }
+SELECT ?child WHERE { ?child wdt:P40* wd:$qid }
 """
 
 # Sparql query used to fetch all the properties which store unique identifiers
@@ -150,10 +150,10 @@ SERVICE gas:service {
     gas:program gas:out1 ?depth .
     gas:program gas:maxIterations 10 .
     gas:program gas:maxVisited 100 .
-    gas:program gas:linkType shir:P40 .
+    gas:program gas:linkType wdt:P40 .
 }
 SERVICE wikibase:label { bd:serviceParam wikibase:language "$lang" }
-?out shir:$property_for_this_type ?prop .
+?out wdt:$property_for_this_type ?prop .
 }
 ORDER BY ?depth
 LIMIT $limit
