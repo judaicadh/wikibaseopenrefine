@@ -75,11 +75,11 @@ validation_threshold = 95
 redis_uri = 'redis://redis:6379/0?encoding=utf-8'
 
 # Redis prefix to use in front of all keys
-redis_key_prefix = 'openrefine_wikidata:'
+redis_key_prefix = 'wikibaseopenrefine:'
 
 # Headers for the HTTP requests made by the tool
 headers = {
-    'User-Agent':service_name + ' (OpenRefine-Wikibase reconciliation service)',
+    'User-Agent':service_name + ' (wikibaseopenrefine reconciliation service)',
 }
 
 # Previewing settings
@@ -107,13 +107,13 @@ fallback_image_alt = 'shira.cloud logo'
 # Autodescribe endpoint to use.
 # this is used to generate automatic descriptions from item contents.
 # (disable this with: autodescribe_endpoint = None )
-autodescribe_endpoint = None
+autodescribe_endpoint = 'https://tools.wmflabs.org/autodesc/'
 
 # Property proposal settings
 
 # Default type : entity (Q35120)
 # Set to None if so such item exists.
-default_type_entity = 'Q243'
+default_type_entity = None
 
 # Property path used to obtain the type of an item
 # https://shira.wikibase.cloud/wiki/Property:P39
@@ -125,13 +125,13 @@ type_property_path = 'P39'
 property_for_this_type_property = None
 
 # Optional prefix in front of properties in SPARQL-like property paths
-wdt_prefix = 'wdt:'
+wdt_prefix = 'shir'
 
 # Sparql query used to fetch all the subclasses of a given item.
 # https://shira.wikibase.cloud/wiki/Property:P40
 # The '$qid' string will be replaced by the qid whose children should be fetched.
 sparql_query_to_fetch_subclasses = """
-SELECT ?child WHERE { ?child wdt:P40* wd:$qid }
+SELECT ?child WHERE { ?child shir:P40* wd:$qid }
 """
 
 # Sparql query used to fetch all the properties which store unique identifiers
@@ -150,10 +150,10 @@ SERVICE gas:service {
     gas:program gas:out1 ?depth .
     gas:program gas:maxIterations 10 .
     gas:program gas:maxVisited 100 .
-    gas:program gas:linkType wdt:P40 .
+    gas:program gas:linkType shir:P40 .
 }
 SERVICE wikibase:label { bd:serviceParam wikibase:language "$lang" }
-?out wdt:$property_for_this_type ?prop .
+?out shir:$property_for_this_type ?prop .
 }
 ORDER BY ?depth
 LIMIT $limit
