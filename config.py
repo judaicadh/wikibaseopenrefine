@@ -11,7 +11,7 @@ wikibase_url = 'https://shira.wikibase.cloud'
 mediawiki_api_endpoint = wikibase_url + '/w/api.php'
 
 # SPARQL endpoint
-wikibase_sparql_endpoint = wikibase_url + '/query/'
+wikibase_sparql_endpoint = wikibase_url + '/query/sparql'
 # Name of the Wikibase instance
 wikibase_name = 'ShiraWikibase.cloud'
 
