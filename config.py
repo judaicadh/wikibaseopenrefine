@@ -69,7 +69,7 @@ this_host = 'http://localhost:8000'
 # The default limit on the number of results returned by us
 default_num_results = 25
 
-# The maximum number of search results to retrieve from the Wikidata search API
+# The maximum number of search results to retrieve from the Wikibase search API
 wd_api_max_search_results = 50 # need a bot account to get more
 
 # The matching score above which we should automatically match an item
