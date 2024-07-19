@@ -44,8 +44,8 @@ p_re_group_id = 3
 # Note that you should be careful about using http or https there,
 # because any variation will break comparisons at various places.
 identifier_space = wikibase_url + '/entity/'
-# Different from Wikidata, which uses '/prop/direct/' instead
-schema_space = wikibase_url + '/entity/'
+# note that '/prop/direct/' cannot be accessed in the browser (except on Wikidata)
+schema_space = wikibase_url + '/prop/direct/'
 
 # Pattern used to form the URL of a Qid.
 # This is only used for viewing so it is fine to use any protocol (therefore, preferably HTTPS if supported)
