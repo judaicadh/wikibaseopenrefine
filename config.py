@@ -5,16 +5,18 @@ which Wikibase instance and which property/item ids
 should be used
 """
 
+wikibase_url = 'https://shira.wikibase.cloud'
+
 # Endpoint of the MediaWiki API of the Wikibase instance
-mediawiki_api_endpoint = 'https://shira.wikibase.cloud/w/api.php'
+mediawiki_api_endpoint = wikibase_url + '/w/api.php'
 
 # SPARQL endpoint
-wikibase_sparql_endpoint = 'https://shira.wikibase.cloud/query/'
+wikibase_sparql_endpoint = wikibase_url + '/query/sparql'
 # Name of the Wikibase instance
 wikibase_name = 'ShiraWikibase.cloud'
 
 # URL of the main page of the Wikibase instance
-wikibase_main_page = 'https://shira.wikibase.cloud/wiki/Main_Page'
+wikibase_main_page = wikibase_url + '/wiki/Main_Page'
 
 # Wikibase namespace ID, used to search for items
 # For Wikidata this is 0, but most by default Wikibase uses 120, which is the default Wikibase 'Item:' namespace
@@ -25,12 +27,14 @@ wikibase_namespace_id = 120
 # Namespace prefix of Wikibase items (including colon, e.g. 'Item:')
 wikibase_namespace_prefix = 'Item:'
 
-# User agent to connect to the Wikidata APIs
-user_agent = 'OpenRefine-Wikidata reconciliation interface'
+# User agent to connect to the API of your Wikibase instance
+user_agent = 'OpenRefine-Wikibase reconciliation interface'
 
 # Regexes and group ids to extracts Qids and Pids from URLs
 import re
-q_re = re.compile(r'(<?https?://shira.wikibase.cloud/(entity|wiki)/)?(Q[0-9]+)>?')
+# Different from Wikidata, which has items in the main namespace, not Item
+# re.compile(r'(<?https?://shira.wikibase.cloud/(entity|wiki)/)?(Q[0-9]+)>?')
+q_re = re.compile(r'(<?https?://shira.wikibase.cloud/(entity/|wiki/Item:))?(Q[0-9]+)>?')
 q_re_group_id = 3
 p_re = re.compile(r'(<?https?://shira.wikibase.cloud/(entity/|wiki/Property:))?(P[0-9]+)>?')
 p_re_group_id = 3
@@ -39,13 +43,13 @@ p_re_group_id = 3
 # This should match the IRI prefixes used in RDF serialization. For instance: https://shira.wikibase.cloud/wiki/Special:EntityData/Q10.rdf 
 # Note that you should be careful about using http or https there,
 # because any variation will break comparisons at various places.
-identifier_space = 'https://shira.wikibase.cloud/entity/'
-schema_space = 'https://shira.wikibase.cloud/prop/direct/'
-
+identifier_space = wikibase_url + '/entity/'
+# note that '/prop/direct/' cannot be accessed in the browser (except on Wikidata)
+schema_space = wikibase_url + '/prop/direct/'
 
 # Pattern used to form the URL of a Qid.
 # This is only used for viewing so it is fine to use any protocol (therefore, preferably HTTPS if supported)
-qid_url_pattern = 'https://shira.wikibase.cloud/wiki/Item:{{id}}'
+qid_url_pattern = wikibase_url  + '/wiki/Item:{{id}}'
 
 # By default, filter out any items which are instance
 # of a subclass of this class.
@@ -65,7 +69,7 @@ this_host = 'http://localhost:8000'
 # The default limit on the number of results returned by us
 default_num_results = 25
 
-# The maximum number of search results to retrieve from the Wikidata search API
+# The maximum number of search results to retrieve from the Wikibase search API
 wd_api_max_search_results = 50 # need a bot account to get more
 
 # The matching score above which we should automatically match an item
@@ -107,7 +111,8 @@ fallback_image_alt = 'shira.cloud logo'
 # Autodescribe endpoint to use.
 # this is used to generate automatic descriptions from item contents.
 # (disable this with: autodescribe_endpoint = None )
-autodescribe_endpoint = 'https://tools.wmflabs.org/autodesc/'
+# autodescribe_endpoint = 'https://tools.wmflabs.org/autodesc/'
+autodescribe_endpoint = None
 
 # Property proposal settings
 
