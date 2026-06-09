@@ -75,8 +75,10 @@ wd_api_max_search_results = 50 # need a bot account to get more
 # The matching score above which we should automatically match an item
 validation_threshold = 95
 
-# Redis client used for caching at various places
-redis_uri = 'redis://redis:6379/0?encoding=utf-8'
+# Redis client used for caching at various places.
+# Set to None to run without a Redis server (uses in-process fakeredis).
+# To use a real Redis server instead: redis_uri = 'redis://localhost:6379/0?encoding=utf-8'
+redis_uri = None
 
 # Redis prefix to use in front of all keys
 redis_key_prefix = 'wikibaseopenrefine:'

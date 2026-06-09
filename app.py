@@ -3,7 +3,7 @@
 import json
 import time
 import aiohttp
-import aioredis
+import redis.asyncio as aioredis
 from quart import Quart, render_template, request, g
 from quart_cors import cors
 from docopt import docopt
@@ -24,7 +24,12 @@ app = cors(app, allow_origin='*')
 
 @app.before_serving
 async def setup():
-    app.redis_client = aioredis.from_url(redis_uri, encoding='utf-8', decode_responses=True)
+    if redis_uri:
+        app.redis_client = aioredis.from_url(redis_uri, encoding='utf-8', decode_responses=True)
+    else:
+        # No Redis server required: use an in-process fake Redis for caching
+        import fakeredis.aioredis
+        app.redis_client = fakeredis.aioredis.FakeRedis(encoding='utf-8', decode_responses=True)
     app.http_connector = aiohttp.TCPConnector(limit_per_host=10)
     app.http_session_obj = aiohttp.ClientSession(connector=app.http_connector)
     app.http_session = await app.http_session_obj.__aenter__()
@@ -38,8 +43,7 @@ async def request_context():
 @app.after_serving
 async def teardown():
     await app.http_session.__aexit__(None, None, None)
-    app.redis_client.close()
-    await app.redis_client.wait_closed()
+    await app.redis_client.aclose()
 
 def jsonp(view):
     async def wrapped(*posargs, **kwargs):
@@ -307,14 +311,14 @@ async def propose_properties(args, lang):
 @jsonp
 async def fetch_property_by_batch(args, lang):
     args['lang'] = fix_lang(lang)
-    return await reconcile.fetch_property_by_batch(args)
+    return await g.reconcile.fetch_property_by_batch(args)
 
 @app.route('/<lang>/fetch_properties_by_batch', endpoint='fetch-properties-batch', methods=['GET','POST'])
 @jsonp
 async def fetch_property_by_batch(args, lang):
     args['lang'] = fix_lang(lang)
     args['extend'] = json.loads(args.get('extend', '{}'))
-    return await reconcile.fetch_properties_by_batch(args)
+    return await g.reconcile.fetch_properties_by_batch(args)
 
 @app.route('/', endpoint='home')
 async def home():
