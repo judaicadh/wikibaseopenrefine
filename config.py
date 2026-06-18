@@ -47,6 +47,17 @@ identifier_space = wikibase_url + '/entity/'
 # note that '/prop/direct/' cannot be accessed in the browser (except on Wikidata)
 schema_space = wikibase_url + '/prop/direct/'
 
+# SPARQL prefixes declared at the top of every query we send.
+# IMPORTANT: on some Wikibase instances (notably wikibase.cloud), the
+# default 'wd:' and 'wdt:' prefixes on the SPARQL endpoint do NOT point to
+# the instance's own entities (they resolve to wikidata.org), which makes
+# every wd:/wdt: query silently match nothing. We therefore declare them
+# explicitly, pointing at this instance's entity and direct-property spaces.
+sparql_prefixes = {
+    'wd': identifier_space,             # e.g. https://shira.wikibase.cloud/entity/
+    'wdt': schema_space,               # e.g. https://shira.wikibase.cloud/prop/direct/
+}
+
 # Pattern used to form the URL of a Qid.
 # This is only used for viewing so it is fine to use any protocol (therefore, preferably HTTPS if supported)
 qid_url_pattern = wikibase_url  + '/wiki/Item:{{id}}'

@@ -473,6 +473,21 @@ class QidProperty(PropertyPath):
     async def uniform_depth(self):
         return 1
 
+    async def fetch_qids_by_values(self, values, lang):
+        """
+        When a column is mapped to the special 'qid' property, the
+        values already are the Qids of the items to match, so there is
+        no need to run a SPARQL lookup (the base implementation would
+        emit an invalid query like "?qid qid ?value"). We simply map
+        each value to itself, after normalizing it to a bare Qid.
+        """
+        value_to_qid = defaultdict(list)
+        for v in values:
+            qid = to_q(v)
+            if qid:
+                value_to_qid[v].append((qid, None))
+        return value_to_qid
+
     async def expected_type(self):
         return []
 
