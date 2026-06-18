@@ -1,6 +1,6 @@
 import re
 import math
-from fuzzywuzzy import fuzz
+from rapidfuzz import fuzz
 from unidecode import unidecode
 import config
 
